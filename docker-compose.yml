@@ -1,45 +1,38 @@
-version: '3.8'
+version: '3.7'
+
 services:
-
-#########################################
-#   Setup MYSQL container
-#########################################
-  mysqldb:
+  mysql:
+    platform: linux/x86_64
     image: mysql:5.7
+    container_name: mysql-nodejs
     restart: unless-stopped
-    env_file: ./.env
     environment:
-      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
-      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: nodejs
     ports:
-      - $MYSQLDB_DOCKER_PORT:$MYSQLDB_DOCKER_PORT
+     - "3308:3306"
     volumes:
-      - db:/var/lib/mysql
+    - db:/var/lib/mysql
     networks:
-      - share_db
+      - sharing_db
 
-#########################################
-#   Setup server container
-#########################################
-  express:
+  web:
     depends_on:
-      - mysqldb
+      - mysql
     build: ./
-    restart: unless-stopped
     ports:
-      - 3000
-    environment:
-      - DB_HOST=mysqldb
-      - DB_USER=root
-      - DB_PASSWORD=$MYSQLDB_ROOT_PASSWORD
-      - DB_NAME=$MYSQLDB_DATABASE
-      - DB_PORT=$MYSQLDB_DOCKER_PORT
-    networks:
-      - share_db
+     - "3000:3000"
+    volumes:
+    - ./:/app
+    restart: unless-stopped
+    container_name: nodejs
     stdin_open: true
     tty: true
+    networks:
+      - sharing_db
 
 volumes:
   db:
+
 networks:
-  share_db:
+  sharing_db:

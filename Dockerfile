@@ -1,11 +1,8 @@
 FROM node:gallium-alpine
 
-COPY . ./app
-
 WORKDIR /app
-
+COPY package.json .
+COPY . .
 RUN npm install
 
-EXPOSE 3000
-
-CMD ["npm", "start"]
+CMD npm start
