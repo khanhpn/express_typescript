@@ -5,6 +5,9 @@
 - mysql2: Hỗ trợ kết nối tới mysql.
 - sequelize-cli: Hỗ trợ tạo model, migrate, seed.
 
+## package with typescript
+- Khi một package không có các loại build-in, bạn có thể cài đặt định nghĩa kiểu thông qua @types npm namespace - nơi lưu trữ các định nghĩa kiểu của TypeScript trong project DefiniteTyped. Khi các package được cài đặt, các types sẽ tự động được compiler của TypeScript include vào.
+
 ---
 
 ## How to run
