@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+
+#########################################
+#   Setup MYSQL container
+#########################################
+  mysqldb:
+    image: mysql:5.7
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+    ports:
+      - $MYSQLDB_DOCKER_PORT:$MYSQLDB_DOCKER_PORT
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - share_db
+
+#########################################
+#   Setup server container
+#########################################
+  express:
+    depends_on:
+      - mysqldb
+    build: ./
+    restart: unless-stopped
+    ports:
+      - 3000
+    environment:
+      - DB_HOST=mysqldb
+      - DB_USER=root
+      - DB_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - DB_NAME=$MYSQLDB_DATABASE
+      - DB_PORT=$MYSQLDB_DOCKER_PORT
+    networks:
+      - share_db
+    stdin_open: true
+    tty: true
+
+volumes:
+  db:
+networks:
+  share_db:
