@@ -13,6 +13,7 @@
 ## How to run
 - Step1: `docker-compose build`
 - Step2: `docker-compose up`
+- Step3: Visit `http://localhost:3000/`
 
 ---
 

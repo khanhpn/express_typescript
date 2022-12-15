@@ -14,6 +14,7 @@ import debug from 'debug';
  * import router
  */
 import indexRouter from './routes/index';
+import usersRouter from './routes/users';
 
 /**
  * Initial express framework
@@ -35,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
  * Using router component
  */
 app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
